@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>CrossKnowledge - Code challenge</title>
+</head>
+
+<body>
+
+    <script>
+        // This will create elements for testing, don't change this code
+        (() => {
+            const MS_PER_MINUTE = 60000
+            const NOW = new Date()
+            let minutes = [0, 1, 30, 60, 6 * 60, 23 * 60, 24 * 60]
+            let dates = []
+
+            minutes.forEach((i) => dates.push(new Date(NOW - i * MS_PER_MINUTE)))
+
+            dates.forEach((item) => {
+                let el = document.createElement("div")
+                el.innerHTML = "Started "
+
+                let dt = document.createElement('span')
+                dt.className = 'js-date-format'
+                dt.innerHTML = item.toISOString()
+                el.appendChild(dt)
+                document.body.appendChild(el)
+                console.log('t');
+            })
+        })();
+    </script>
+    <script>
+
+        let times = (() => {
+            let dateTimes = [];
+            document.querySelectorAll('.js-date-format').forEach(element => {
+                dateTimes.push(element.innerHTML);
+            });
+            return dateTimes;
+        })();
+
+        setInterval(() => {
+            let elements = document.querySelectorAll('.js-date-format');
+            for (let index = 0; index < elements.length -1; index++) {
+                const element = elements[index];
+
+                let timeText = '';
+                let currentTime = new Date();
+                let dt = new Date(times[index]);
+
+                let timeDiff = currentTime - dt;
+                timeDiff /= 1000;
+                let seconds = Math.round(timeDiff);
+
+                if (seconds < 60) {
+                    timeText = `started ${seconds} secont(s) ago`;
+                } else if (seconds >= 60 && seconds < 3600) {
+                    let minutes = Math.round(seconds / 60);
+                    timeText = `started ${minutes} minutes(s) ago`;
+                } else if (seconds >= 3600) {
+                    let hours = Math.round((seconds / 60) / 60);
+                    timeText = `started ${hours} hour(s) ago`;
+                }
+                element.innerHTML = timeText;
+            }
+        }, 1000);
+
+    </script>
+</body>
+
+</html>
